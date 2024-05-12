@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\ASUS\Documents\pytube_playlist_downloader\venv
+set VIRTUAL_ENV=C:\Users\ASUS\Desktop\pytube_playlist_downloader\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
