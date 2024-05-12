@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
+        <script src="https://kit.fontawesome.com/fdce0ae322.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/index.js' %}" defer></script>
+    </head>
+    <body>
+
+        <div class="toast warning" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <img src="../media/img/icons8-warning-48.png" class="rounded mr-2" alt="..." style="width:15px;height:15px;">
+              <strong class="mr-auto">YLY</strong>
+              <small>Şimdi</small>
+              <button style="right:10px;position: absolute;width:15px;height:15px;" type="button" class="ml-2 mb-1 close" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body">
+                Hangi formatda yüklemek istediginizi girin!
+            </div>
+        </div>
+
+        <div class="toast success" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <img src="../media/img/icons8-success-48.png" class="rounded mr-2" alt="..." style="width:15px;height:15px;">
+              <strong class="mr-auto">YLY</strong>
+              <small>Şimdi</small>
+              <button style="right:10px;position: absolute;width:15px;height:15px;" type="button" class="ml-2 mb-1 close" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body">
+                Yükleme başladı
+            </div>
+        </div>
+        
+        <section class="main">
+            <div class="container">
+                <div class="header">
+                    <h1><i class="fab fa-youtube" style="color:red;"></i> Youtube list yükleyici</h1>
+                </div>
+                
+
+                <div class="searching-section">
+                    <form method="post" action="{% url 'show-videos' %}">
+                    {% csrf_token %}
+                        <input class="link-input" type="text" name="link-input" placeholder="Playlistin linkini girin">
+                        <button id="submit-link" type="submit" class="submit-link">Göster</button>
+                    </form>
+                </div>
+
+                {% if videos_details%}
+                <div class="select-stream">
+                    <p class="stream-required"><i>Mutlaka seçim edin:</i></p>
+                    <form method="POST" action="{% url 'download-video-audio' %}">
+                       {% csrf_token %}
+                        <input id="submit-link" class="stream" type="button" name="mp3" value="mp3">
+                        <input id="submit-link" class="stream" type="button" name="mp4" value="mp4">
+                        <button id="download" type="button" name="download">Yükle</button>
+                    </form>
+                </div>
+                {% endif %}
+
+                <div class="getting-data-section">
+                    <div class="video-item-section">    
+                        {% for video in videos_details %}
+                        <div class="video-item">
+                            <img src="{{ video.video_thumbnail }}" class="video-thumbnail" alt="video_thumbnail">
+                            <div class="video-info">
+                                <h4 class="video-name" data-videourl="{{video.video_url}}">{{ video.video_name }}</h4>
+                                <h5 class="video-duration">Videonun uzunlugu: {{ video.video_duration}}</h5>
+                                <!-- <select id="grouped-select" name="quality">
+                                    <optgroup label="mp3">
+                                        {% for mp3 in video.video_mp3 %}
+                                        <option value="{{mp3}}" >{{mp3}}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                    <optgroup label="mp4">
+                                        {% for mp4 in video.video_mp4 %}
+                                        <option value="{{mp4}}">{{mp4}}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                </select> -->
+                            </div>
+                        </div>
+                      {% endfor %}                       
+                    </div>
+                </div>
+            </div>
+        </section>
+      
+        {% csrf_token %}
+        <script type="text/javascript">      
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+                return cookieValue;
+        }
+        const csrftokenIndex = getCookie('csrftoken');  
+        </script>
+    </body>
+</html>
